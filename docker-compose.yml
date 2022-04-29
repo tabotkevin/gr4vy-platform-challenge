@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/nginx.Dockerfile
+    container_name: gateway
+    ports:
+      - "80:80"
+
+  auth-api:
+    image: auth-api
+    build: ./auth-api
+    ports:
+      - 8000
+    volumes:
+      - ./auth-api/:/auth-api/
+    env_file:
+      - auth-api/auth.env
+
+  core-api:
+    image: core-api
+    build: ./core-api
+    ports:
+      - 9000
+    volumes:
+      - ./core-api/:/core-api/
+    env_file:
+      - core-api/core.env
+
+  psp-connector:
+    image: psp-connector
+    build: ./psp-connector
+    depends_on:
+      - redis
+    volumes:
+      - ./psp-connector/:/psp-connector/
+    env_file:
+      - psp-connector/psp.env
