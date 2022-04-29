@@ -81,6 +81,7 @@ Server: nginx/1.21.6
 
 ## Proof
 ![proof](proof.png)
+![proof2](proof2.png)
 
 ## Background
 
